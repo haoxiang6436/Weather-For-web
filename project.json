@@ -1,0 +1,106 @@
+{
+	"contentrating" : "Everyone",
+	"description" : "实时天气预报、每日一言、bing每日一图、自定义背景\n\n建议前往[url=https://dev.qweather.com/] 和风天气 [/url]自备key\n1.注册登录账号-->2.进入控制台-->3.创建项目-->4.创建WebAPI-->5.复制key到壁纸属性页面（这不是一条广告！）\n请放心壁纸不会上传您的key，我会将源码放置GitHub，可自行验证\n\n----------------------&&&----------------------\n2023/6/19/20:00\n解决了层出不穷的报错！：）\n修复-开机启动无法正常刷新\n新增-点击每日一言文案-->可更新文案（无限制）\n调整-壁纸每30分钟自动更新，刷新按钮从15分钟调整至5分钟（自备key无限制）",
+	"file" : "index.html",
+	"general" : 
+	{
+		"properties" : 
+		{
+			"customimage" : 
+			{
+				"index" : 5,
+				"order" : 105,
+				"text" : "<h4>[本地背景]</h4>",
+				"type" : "file",
+				"value" : ""
+			},
+			"h41br2br3br4webapibr5keyh4" : 
+			{
+				"index" : 2,
+				"order" : 102,
+				"text" : "<h4>进入[和风天气]官网<br/>1.注册登录账号--><br/>2.进入控制台--><br/>3.创建项目--><br/>4.创建WebAPI--><br/>5.复制key到壁纸属性页面</h4>",
+				"type" : "bool",
+				"value" : true
+			},
+			"h4brwallpaperwebbrbrh4" : 
+			{
+				"index" : 1,
+				"order" : 101,
+				"text" : "<h5>注意：<br/>wallpaper限制web壁纸获取用户地理位置<br/>需要自行输入位置信息【某某区/某某县】<br/></h5>",
+				"type" : "bool",
+				"value" : true
+			},
+			"map" : 
+			{
+				"index" : 4,
+				"order" : 104,
+				"text" : "<h4>[位置-区/县]</h4>",
+				"type" : "textinput",
+				"value" : "南昌市"
+			},
+			"newproperty" : 
+			{
+				"index" : 0,
+				"order" : 100,
+				"text" : "<h4>【天气卡片右上角能刷新天气】<br/>【点击每日一言文案单独刷新】<br/>1. 天气信息来源【和风天气】<br/>2. 每日一言来源【一言】<br/>3. 图片来源【Bing每日一图】</h4>",
+				"type" : "bool",
+				"value" : true
+			},
+			"scale" : 
+			{
+				"fraction" : true,
+				"index" : 8,
+				"max" : 4,
+				"min" : 0.3,
+				"order" : 108,
+				"precision" : 2,
+				"step" : 0.1,
+				"text" : "<h4>[卡片缩放]</h4>",
+				"type" : "slider",
+				"value" : 1.2
+			},
+			"schemecolor" : 
+			{
+				"order" : 0,
+				"text" : "ui_browse_properties_scheme_color",
+				"type" : "color",
+				"value" : "0 0 0"
+			},
+			"userapi" : 
+			{
+				"index" : 3,
+				"order" : 103,
+				"text" : "<h4>[和风天气key]</h4>",
+				"type" : "textinput",
+				"value" : ""
+			},
+			"x" : 
+			{
+				"fraction" : false,
+				"index" : 6,
+				"max" : 100,
+				"min" : 0,
+				"order" : 106,
+				"text" : "<h4>[水平位置]</h4>",
+				"type" : "slider",
+				"value" : 50
+			},
+			"y" : 
+			{
+				"fraction" : false,
+				"index" : 7,
+				"max" : 100,
+				"min" : 0,
+				"order" : 107,
+				"text" : "<h4>[垂直位置]</h4>",
+				"type" : "slider",
+				"value" : 35
+			}
+		}
+	},
+	"preview" : "preview.jpg",
+	"tags" : [ "Unspecified" ],
+	"title" : "【实时天气 | 每日一言】2.0修复版",
+	"type" : "web",
+	"version" : 0
+}

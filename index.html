@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="css/cdn.jsdelivr.net_npm_qweather-icons@1.3.3_font_qweather-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/unpkg.com_element-ui@2.15.13_lib_theme-chalk_index.css">
+    <script src="js/unpkg.com_vue@2.6.14_dist_vue.js"></script>
+    <script src="js/unpkg.com_element-ui@2.15.13_lib_index.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            background: url(https://bing-cdn.suibofuchen.com/bing/15-Jun-2023/15-Jun-2023.jpg);
+            background-size: cover;
+            overflow: hidden;
+        }
+
+        :root {
+            --main-color: rgba(0, 0, 0, 0.15);
+            --items-bgcolor: rgba(255, 255, 255, 0.1);
+            --text-color: rgb(255, 255, 255);
+            --accent-color: rgb(208, 215, 223);
+        }
+
+        .but {
+            transition: all 0.3s;
+        }
+
+        .but:active {
+            transform: scale(.75);
+        }
+
+        .container {
+            backdrop-filter: blur(5px);
+            width: 612px;
+            height: 260px;
+            padding: 20px;
+            background-color: var(--main-color);
+            border-radius: 10px;
+            position: absolute;
+            left: 50%;
+            top: 35%;
+            transition: all .3s;
+            transform: translateX(-50%) translateY(-50%) scale(1.2);
+        }
+
+        .container .header {
+            display: flex;
+            justify-content: space-between;
+            color: var(--text-color);
+            height: 55px;
+        }
+
+        .labelContainerCompact .svg {
+            vertical-align: middle;
+        }
+
+        .container .feedbackRow .move {
+            animation: move .6s linear infinite;
+        }
+
+        .container .header #watCity {
+            font-weight: bolder;
+            line-height: 25px;
+        }
+
+        .container .header #timeCity {
+            font-size: 10px;
+            line-height: 15px;
+            color: var(--accent-color);
+        }
+
+        .cont {
+            display: flex;
+            flex-wrap: wrap;
+            height: 135px;
+        }
+
+        .cont .pic,
+        .cont .temp {
+            padding: 0px 10px;
+            color: var(--text-color);
+            font-size: 64px;
+        }
+
+        .cont .temp::after {
+            content: '℃';
+            font-size: 34px;
+            vertical-align: top;
+        }
+
+        .cont .Cloud {
+            display: flex;
+            flex-flow: column nowrap;
+            margin-left: 30px;
+            line-height: 35px;
+            color: var(--text-color);
+        }
+
+        .cont .Cloud .weather {
+            font-size: 18px;
+        }
+
+        .cont .Cloud .boTemp {
+            font-size: 14px;
+            color: var(--accent-color);
+        }
+
+        .cont .title {
+            width: 100%;
+            color: var(--text-color);
+            font-size: 16px;
+            line-height: 22px;
+            height: 65px;
+            display: flex;
+            align-items: center;
+            vertical-align: middle;
+        }
+
+        .items {
+            display: flex;
+            justify-content: space-between;
+            color: var(--accent-color);
+            background: var(--items-bgcolor);
+            padding: 10px 25px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+
+        }
+
+        .items .item .tit {
+            font-size: 12px;
+            line-height: 25px;
+        }
+
+        .items .item .inFor {
+            font-size: 16px;
+            line-height: 22px;
+            font-weight: normal;
+            color: var(--text-color);
+        }
+
+        @keyframes move {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body id="body">
+    <div id="app" @click="showAlert" style="display: none;"></div>
+    <div id="app2" @click="showAlert" style="display: none;"></div>
+    <div id="app3" @click="showAlert" style="display: none;"></div>
+    <div id="app4" @click="showAlert" style="display: none;"></div>
+    <div id="app5" @click="showAlert" style="display: none;"></div>
+    <div class="container" id="container">
+        <div class="header">
+            <div class="labelContainerCompact">
+                <svg class="svg" xmlns="http://www.w3.org/2000/svg" class="icon" width="16px" height="16.00px"
+                    viewBox="0 0 1024 1024" version="1.1">
+                    <path fill="#ffffff"
+                        d="M894.185422 128.023792 129.814578 445.743994 445.99982 577.744353 571.860343 893.929596Z" />
+                </svg>
+                <span id="watCity">-/-</span><br />
+                <span id="timeCity">-/-</span>
+            </div>
+            <div class="feedbackRow">
+                <svg class="but" id="but" @click="showAlert" type="primary" xmlns="http://www.w3.org/2000/svg"
+                    class="icon" width="32px" height="32.00px" viewBox="0 0 1024 1024" version="1.1">
+                    <path id="butCont" class="butCont" fill="#ffffff"
+                        d="M511.582491 63.413262C265.134543 63.413262 64.62588 263.921925 64.62588 510.369873s200.508663 446.957635 446.957635 446.957635 446.957635-200.508663 446.957635-446.957635S758.031463 63.413262 511.582491 63.413262zM509.001713 751.859903c-98.517781 0-182.467775-62.623269-214.771505-150.056598l0.327458-0.134053c-2.007727-4.036943-3.38305-8.422833-3.38305-13.237489 0-16.647145 13.494339-30.142507 30.142507-30.142507 13.389962 0 24.358781 8.877181 28.2893 20.955264l0.422625-0.172939c23.269983 65.442478 85.645612 112.503307 158.972665 112.503307 93.106538 0 168.845523-75.738985 168.845523-168.845523s-75.738985-168.845523-168.845523-168.845523c-20.432355 0-39.874149 3.980661-58.013275 10.66899l21.248953 40.742936c2.486634 2.677992 4.0175 6.2831 4.0175 10.243295 0 8.417717-8.404414 14.921851-15.365966 15.07023-0.102331 0-0.206708 0-0.309038 0-0.220011 0-0.427742 0-0.647753-0.013303l-150.579507-6.463202c-5.372358-0.234337-10.229992-3.310396-12.716626-8.093329-2.486634-4.76963-2.236947-10.509355 0.647753-15.055904l80.890308-127.179564c2.8847-4.533246 8.006348-7.151887 13.365402-6.960529 5.372358 0.234337 10.227945 3.312442 12.71458 8.095375l18.580171 35.625382c26.629497-10.855232 55.683207-16.963347 86.168522-16.963347 126.338407 0 229.130537 102.791108 229.130537 229.130537S635.340119 751.859903 509.001713 751.859903z" />
+                </svg>
+            </div>
+        </div>
+        <div class="cont">
+            <div class="pic" id="NowIcon">
+                <i class="qi-100" style="color: #fff; font-size: 64px;"></i>
+            </div>
+            <div class="temp" id="NowTemp">-/-</div>
+            <div class="Cloud">
+                <div class="weather" id="NowWeather">-/-</div>
+                <div class="boTemp" id="feelsLike">-/-℃</div>
+            </div>
+            <div class="title" id="hitokoto_author"></div>
+        </div>
+        <div class="items">
+            <div class="item">
+                <div class="tit">空气质量指数<svg style="margin-left: 5px; vertical-align: middle; " width="12" height="12"
+                        viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" class="inline-DS-EntryPoint1-1">
+                        <path
+                            d="M6.00001 0.166061C9.22217 0.166061 11.8342 2.77814 11.8342 6.0003C11.8342 9.22246 9.22217 11.8345 6.00001 11.8345C2.77785 11.8345 0.165771 9.22246 0.165771 6.0003C0.165771 2.77814 2.77785 0.166061 6.00001 0.166061ZM6.00001 1.04106C3.2611 1.04106 1.04077 3.26139 1.04077 6.0003C1.04077 8.73921 3.2611 10.9595 6.00001 10.9595C8.73892 10.9595 10.9592 8.73921 10.9592 6.0003C10.9592 3.26139 8.73892 1.04106 6.00001 1.04106ZM5.99788 5.12473C6.21937 5.12459 6.40253 5.28906 6.43164 5.50258L6.43567 5.56195L6.43777 8.77121C6.43793 9.01284 6.24218 9.20884 6.00056 9.209C5.77907 9.20914 5.59591 9.04467 5.5668 8.83115L5.56277 8.77178L5.56067 5.56252C5.56051 5.3209 5.75626 5.12489 5.99788 5.12473ZM6.00027 3.08437C6.32201 3.08437 6.58282 3.34519 6.58282 3.66693C6.58282 3.98866 6.32201 4.24948 6.00027 4.24948C5.67854 4.24948 5.41772 3.98866 5.41772 3.66693C5.41772 3.34519 5.67854 3.08437 6.00027 3.08437Z"
+                            fill="white" fill-opacity="0.55"></path>
+                    </svg></div>
+                <div class="inFor" id="AirQuality">-/-</div>
+            </div>
+            <div class="item">
+                <div class="tit">风速<svg style="margin-left: 5px; vertical-align: middle; " width="12" height="12"
+                        viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" class="inline-DS-EntryPoint1-1">
+                        <path
+                            d="M6.00001 0.166061C9.22217 0.166061 11.8342 2.77814 11.8342 6.0003C11.8342 9.22246 9.22217 11.8345 6.00001 11.8345C2.77785 11.8345 0.165771 9.22246 0.165771 6.0003C0.165771 2.77814 2.77785 0.166061 6.00001 0.166061ZM6.00001 1.04106C3.2611 1.04106 1.04077 3.26139 1.04077 6.0003C1.04077 8.73921 3.2611 10.9595 6.00001 10.9595C8.73892 10.9595 10.9592 8.73921 10.9592 6.0003C10.9592 3.26139 8.73892 1.04106 6.00001 1.04106ZM5.99788 5.12473C6.21937 5.12459 6.40253 5.28906 6.43164 5.50258L6.43567 5.56195L6.43777 8.77121C6.43793 9.01284 6.24218 9.20884 6.00056 9.209C5.77907 9.20914 5.59591 9.04467 5.5668 8.83115L5.56277 8.77178L5.56067 5.56252C5.56051 5.3209 5.75626 5.12489 5.99788 5.12473ZM6.00027 3.08437C6.32201 3.08437 6.58282 3.34519 6.58282 3.66693C6.58282 3.98866 6.32201 4.24948 6.00027 4.24948C5.67854 4.24948 5.41772 3.98866 5.41772 3.66693C5.41772 3.34519 5.67854 3.08437 6.00027 3.08437Z"
+                            fill="white" fill-opacity="0.55"></path>
+                    </svg></div>
+                <div class="inFor" id="Speed">-/-</div>
+            </div>
+            <div class="item">
+                <div class="tit">湿度<svg style="margin-left: 5px; vertical-align: middle; " width="12" height="12"
+                        viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" class="inline-DS-EntryPoint1-1">
+                        <path
+                            d="M6.00001 0.166061C9.22217 0.166061 11.8342 2.77814 11.8342 6.0003C11.8342 9.22246 9.22217 11.8345 6.00001 11.8345C2.77785 11.8345 0.165771 9.22246 0.165771 6.0003C0.165771 2.77814 2.77785 0.166061 6.00001 0.166061ZM6.00001 1.04106C3.2611 1.04106 1.04077 3.26139 1.04077 6.0003C1.04077 8.73921 3.2611 10.9595 6.00001 10.9595C8.73892 10.9595 10.9592 8.73921 10.9592 6.0003C10.9592 3.26139 8.73892 1.04106 6.00001 1.04106ZM5.99788 5.12473C6.21937 5.12459 6.40253 5.28906 6.43164 5.50258L6.43567 5.56195L6.43777 8.77121C6.43793 9.01284 6.24218 9.20884 6.00056 9.209C5.77907 9.20914 5.59591 9.04467 5.5668 8.83115L5.56277 8.77178L5.56067 5.56252C5.56051 5.3209 5.75626 5.12489 5.99788 5.12473ZM6.00027 3.08437C6.32201 3.08437 6.58282 3.34519 6.58282 3.66693C6.58282 3.98866 6.32201 4.24948 6.00027 4.24948C5.67854 4.24948 5.41772 3.98866 5.41772 3.66693C5.41772 3.34519 5.67854 3.08437 6.00027 3.08437Z"
+                            fill="white" fill-opacity="0.55"></path>
+                    </svg></div>
+                <div class="inFor" id="Humidity">-/-</div>
+            </div>
+            <div class="item">
+                <div class="tit">能见度<svg style="margin-left: 5px; vertical-align: middle; " width="12" height="12"
+                        viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" class="inline-DS-EntryPoint1-1">
+                        <path
+                            d="M6.00001 0.166061C9.22217 0.166061 11.8342 2.77814 11.8342 6.0003C11.8342 9.22246 9.22217 11.8345 6.00001 11.8345C2.77785 11.8345 0.165771 9.22246 0.165771 6.0003C0.165771 2.77814 2.77785 0.166061 6.00001 0.166061ZM6.00001 1.04106C3.2611 1.04106 1.04077 3.26139 1.04077 6.0003C1.04077 8.73921 3.2611 10.9595 6.00001 10.9595C8.73892 10.9595 10.9592 8.73921 10.9592 6.0003C10.9592 3.26139 8.73892 1.04106 6.00001 1.04106ZM5.99788 5.12473C6.21937 5.12459 6.40253 5.28906 6.43164 5.50258L6.43567 5.56195L6.43777 8.77121C6.43793 9.01284 6.24218 9.20884 6.00056 9.209C5.77907 9.20914 5.59591 9.04467 5.5668 8.83115L5.56277 8.77178L5.56067 5.56252C5.56051 5.3209 5.75626 5.12489 5.99788 5.12473ZM6.00027 3.08437C6.32201 3.08437 6.58282 3.34519 6.58282 3.66693C6.58282 3.98866 6.32201 4.24948 6.00027 4.24948C5.67854 4.24948 5.41772 3.98866 5.41772 3.66693C5.41772 3.34519 5.67854 3.08437 6.00027 3.08437Z"
+                            fill="white" fill-opacity="0.55"></path>
+                    </svg></div>
+                <div class="inFor" id="Visibility">-/-</div>
+            </div>
+            <div class="item">
+                <div class="tit">气压<svg style="margin-left: 5px; vertical-align: middle; " width="12" height="12"
+                        viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" class="inline-DS-EntryPoint1-1">
+                        <path
+                            d="M6.00001 0.166061C9.22217 0.166061 11.8342 2.77814 11.8342 6.0003C11.8342 9.22246 9.22217 11.8345 6.00001 11.8345C2.77785 11.8345 0.165771 9.22246 0.165771 6.0003C0.165771 2.77814 2.77785 0.166061 6.00001 0.166061ZM6.00001 1.04106C3.2611 1.04106 1.04077 3.26139 1.04077 6.0003C1.04077 8.73921 3.2611 10.9595 6.00001 10.9595C8.73892 10.9595 10.9592 8.73921 10.9592 6.0003C10.9592 3.26139 8.73892 1.04106 6.00001 1.04106ZM5.99788 5.12473C6.21937 5.12459 6.40253 5.28906 6.43164 5.50258L6.43567 5.56195L6.43777 8.77121C6.43793 9.01284 6.24218 9.20884 6.00056 9.209C5.77907 9.20914 5.59591 9.04467 5.5668 8.83115L5.56277 8.77178L5.56067 5.56252C5.56051 5.3209 5.75626 5.12489 5.99788 5.12473ZM6.00027 3.08437C6.32201 3.08437 6.58282 3.34519 6.58282 3.66693C6.58282 3.98866 6.32201 4.24948 6.00027 4.24948C5.67854 4.24948 5.41772 3.98866 5.41772 3.66693C5.41772 3.34519 5.67854 3.08437 6.00027 3.08437Z"
+                            fill="white" fill-opacity="0.55"></path>
+                    </svg></div>
+                <div class="inFor" id="bar">-/-</div>
+            </div>
+            <div class="item">
+                <div class="tit">露点<svg style="margin-left: 5px; vertical-align: middle; " width="12" height="12"
+                        viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" class="inline-DS-EntryPoint1-1">
+                        <path
+                            d="M6.00001 0.166061C9.22217 0.166061 11.8342 2.77814 11.8342 6.0003C11.8342 9.22246 9.22217 11.8345 6.00001 11.8345C2.77785 11.8345 0.165771 9.22246 0.165771 6.0003C0.165771 2.77814 2.77785 0.166061 6.00001 0.166061ZM6.00001 1.04106C3.2611 1.04106 1.04077 3.26139 1.04077 6.0003C1.04077 8.73921 3.2611 10.9595 6.00001 10.9595C8.73892 10.9595 10.9592 8.73921 10.9592 6.0003C10.9592 3.26139 8.73892 1.04106 6.00001 1.04106ZM5.99788 5.12473C6.21937 5.12459 6.40253 5.28906 6.43164 5.50258L6.43567 5.56195L6.43777 8.77121C6.43793 9.01284 6.24218 9.20884 6.00056 9.209C5.77907 9.20914 5.59591 9.04467 5.5668 8.83115L5.56277 8.77178L5.56067 5.56252C5.56051 5.3209 5.75626 5.12489 5.99788 5.12473ZM6.00027 3.08437C6.32201 3.08437 6.58282 3.34519 6.58282 3.66693C6.58282 3.98866 6.32201 4.24948 6.00027 4.24948C5.67854 4.24948 5.41772 3.98866 5.41772 3.66693C5.41772 3.34519 5.67854 3.08437 6.00027 3.08437Z"
+                            fill="white" fill-opacity="0.55"></path>
+                    </svg></div>
+                <div class="inFor" id="dew">-/-</div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let userKeyLock = false;
+        let RefreshBtn = true;
+        let AutoDelayRefresh = 18000000;
+        let UserDelayRefresh = 300000;
+        let WeatherData = {
+            apiKey: 'a5055cffdd594c968fe0b78cd9f652d3',
+            cityName: '南昌',
+            UpDataTime: '',
+            cityNameStr: '',
+            cityCode: '',
+            latLon: '',
+        };
+        const NowTemp = document.getElementById('NowTemp');
+        const NowIcon = document.getElementById('NowIcon');
+        const NowWeather = document.getElementById('NowWeather');
+        const feelsLike = document.getElementById('feelsLike');
+        const Speed = document.getElementById('Speed');
+        const Humidity = document.getElementById('Humidity');
+        const Visibility = document.getElementById('Visibility');
+        const bar = document.getElementById('bar');
+        const dew = document.getElementById('dew');
+        const timeCity = document.getElementById('timeCity');
+        const watCity = document.getElementById('watCity');
+        const AirQuality = document.getElementById('AirQuality');
+        const hitokoto_author = document.getElementById('hitokoto_author');
+        // 调用函数以检查存储的数据
+        checkLocalStorageData();
+        new Vue({
+            el: '#but',
+            methods: {
+                showAlert() {
+                    if (RefreshBtn) {
+                        RefreshBtn = false;
+                        const nowTime = Date.now(); // 记录当前时间
+                        if ((nowTime - WeatherData.UpDataTime > UserDelayRefresh) || userKeyLock) {
+                            getNowWeather(); // 执行获取天气信息
+
+                        } else {
+                            const remainingTime = Math.floor((UserDelayRefresh - (nowTime - WeatherData.UpDataTime)) / 1000 / 60);
+                            this.showWarningAlert(`<h4 style="margin: 0px 20px; line-height: 26px;">Warning:<br/>很抱歉！由于作者API每日访问次数有限，上一次数据仍在有效期内<br/>请在 <i style="font-size: 1.5em; color: red;">${remainingTime}</i> 分钟后再刷新<br/>前往壁纸属性面板输入key以解除此限制!</h4>`);
+                            RefreshBtn = true;
+                        }
+                    }
+                },
+                showWarningAlert(message) {
+                    this.$message({
+                        showClose: true,
+                        dangerouslyUseHTMLString: true,
+                        message: message,
+                        type: 'warning',
+                    });
+                },
+            }
+        });
+        function getNowWeather() { // 请求天气信息
+            console.log(`1. 开始请求天气信息`)
+            but.classList.add('move');
+            fetch(`https://geoapi.qweather.com/v2/city/lookup?location=${WeatherData.cityName}&key=${WeatherData.apiKey}`) // 更新城市/id/经纬
+                .then(response => response.json())
+                .then(UpDataCityName)
+                .then(() => fetch(`https://devapi.qweather.com/v7/weather/now?location=${WeatherData.latLon}&key=${WeatherData.apiKey}`)) // 获取实时天气
+                .then(response => response.json())
+                .then(updateWeatherData)
+                .then(() => fetch(`https://devapi.qweather.com/v7/air/now?location=${WeatherData.latLon}&key=${WeatherData.apiKey}`)) // 获取空气指数
+                .then(response => response.json())
+                .then(updateAirQualityData)
+                .then(() => fetch('https://v1.hitokoto.cn/?&c=d&c=k&c=i')) // 每日一言
+                .then(response => response.json())
+                .then(updateHitokotoData)
+                .then(DataRequestOver)
+                .catch(error => {
+                    but.classList.remove('move');
+                    console.error('发生错误:', error);
+                    app2.click();
+                    RefreshBtn = true;
+                });
+        }
+        function DataRequestOver() { // 数据获取成功
+            LocalCache(); // 存储数据
+            RenderData(); // 渲染数据
+            but.classList.remove('move');
+            app4.click();
+            clearInterval(downTimeUpData);
+            downTimeUpData = setInterval(getNowWeather, AutoDelayRefresh);
+            RefreshBtn = true;
+        }
+        function UpDataCityName(data) { // 更新城市
+            console.log(`1. 1-更新城市...`)
+            if (data.code != 200 || data.code != "200") { console.log(`Error:\n${data.code}`); }
+            WeatherData.cityNameStr = `${data.location[0].adm1} - ${data.location[0].name}`;
+            WeatherData.cityCode = data.location[0].id;
+            WeatherData.latLon = `${data.location[0].lon},${data.location[0].lat}`;
+        }
+        function updateWeatherData(data) { // 更新实时天气
+            console.log(`1. 2-更新实时天气...`)
+            if (data.code == 402 || data.code == '402') { app5.click(); }
+            if (data.code != "200" || data.code != 200) { console.log(`实时天气Error:${data.code}:\n`); return; }
+            WeatherData.temp = data.now.temp;
+            WeatherData.icon = data.now.icon;
+            WeatherData.text = data.now.text;
+            WeatherData.feelsLike = data.now.feelsLike;
+            WeatherData.windSpeed = data.now.windSpeed;
+            WeatherData.humidity = data.now.humidity;
+            WeatherData.vis = data.now.vis;
+            WeatherData.pressure = data.now.pressure;
+            WeatherData.dew = data.now.dew;
+            WeatherData.obsTime = data.now.obsTime;
+        }
+        function updateAirQualityData(data) { // 更新空气指数
+            console.log(`1. 3-更新空气指数...`)
+            WeatherData.aqi = data.now.aqi;
+            WeatherData.category = data.now.category;
+        }
+        function updateHitokotoData(data) { // 每日一言
+            console.log(`1. 4-更新每日一言...`)
+            const from_who = (data.from_who || '');
+            WeatherData.hitokotoData = data.hitokoto;
+            WeatherData.hitokotoData_who = from_who;
+            WeatherData.hitokotoData_from = data.from;
+            WeatherData.UpDataTime = Date.now();
+            console.log(`所有数据更新完!!!`)
+        }
+        function RenderData() { //渲染数据
+            console.log(`2. 3-开始渲染数据...`)
+            NowTemp.textContent = WeatherData.temp;
+            NowIcon.innerHTML = `<i class="qi-${WeatherData.icon}" style="color: #fff; font-size: 64px;"></i>`;
+            NowWeather.textContent = WeatherData.text;
+            feelsLike.textContent = `体感温度 ${WeatherData.feelsLike} ℃`;
+            Speed.textContent = `${WeatherData.windSpeed}公里/小时`;
+            Humidity.textContent = `${WeatherData.humidity}%`;
+            Visibility.textContent = `${WeatherData.vis}公里`;
+            bar.textContent = `${WeatherData.pressure}hPa`;
+            dew.textContent = `${WeatherData.dew}℃`;
+            timeCity.textContent = `${formatDateTime(WeatherData.obsTime)}推送更新`;
+            watCity.textContent = ` ${WeatherData.cityNameStr}`;
+            AirQuality.innerHTML = `${WeatherData.aqi}<span style="font-size:10px; background-color: var(--items-bgcolor); border-radius: 50%; margin-left: 5px; padding:5px 5px;">${WeatherData.category}</span>`;
+            hitokoto_author.textContent = `${WeatherData.hitokotoData}—— ${WeatherData.hitokotoData_who} 「 ${WeatherData.hitokotoData_from} 」`;
+            console.log(`2. 4-数据渲染完毕!!!`)
+        }
+        function LocalCache() {// 内存 ->覆盖-> 本地存储
+            console.log(`2. 1-开始更新本地存储...`);
+            const dataString = JSON.stringify(WeatherData);
+            localStorage.setItem('weatherData2', dataString);
+            console.log(`2. 2-本地存储更新完成!!!`);
+        }
+        function checkLocalStorageData() {// 检查是否存在存储的数据
+            if (localStorage.getItem('weatherData2')) {
+                // 存储的数据存在
+                console.log('数据已存在，即将读取本地数据\n');
+                const storedDataString = localStorage.getItem('weatherData2');
+                const storedWeatherData = JSON.parse(storedDataString);
+                const storedUpDataTime = storedWeatherData.UpDataTime; // 获取数据更新时间
+                const nowTime = Date.now(); // 记录当前时间
+                if ((nowTime - storedUpDataTime) > 1800000) { console.log(`本地数据已过期，即将更新天气信息`); getNowWeather(); return; }// 距离上次更新时间超 30 分钟 自动更新
+                console.log(`本地数据有效，读取本地数据。。`);
+                WeatherData = storedWeatherData; // 读取本地存储 本地存储 ->覆盖-> 内存
+                RenderData();
+            } else {
+                // 存储的数据不存在
+                console.log('数据不存在，即将更新数据\n');
+                getNowWeather();
+            }
+        }
+        function formatDateTime(dateTimeString) { // 日期分割
+            const date = dateTimeString.slice(0, 10);
+            const time = dateTimeString.slice(11, 16);
+            return `${date}/${time}`;
+        }
+        window.wallpaperPropertyListener = { // wallpaper
+            applyUserProperties: function (properties) {
+                if (properties.map) {
+                    clearTimeout(window.mapTimeout); // 清除上一个定时器
+                    window.mapTimeout = setTimeout(function () {
+                        const Name = properties.map.value;
+                        if (Name == '' || Name == WeatherData.cityName) { return; }
+                        WeatherData.cityName = Name;
+                        getNowWeather();
+                    }, 500); // 设置延迟时间（毫秒）
+                }
+                if (properties.userapi) {
+                    if (properties.userapi.value != '' && properties.userapi.value.length == 32) {
+                        const userapi = properties.userapi.value;
+                        checkAPIKeyValidity(userapi);
+                    } else {
+                        userKeyLock = false;
+                    }
+                }
+                if (properties.customimage) {
+                    let customImageFile = 'file:///' + properties.customimage.value;
+                    if (customImageFile == 'file:///') { customImageFile = 'https://bing-cdn.suibofuchen.com/bing/15-Jun-2023/15-Jun-2023.jpg'; }
+                    body.style.backgroundImage = `url(${customImageFile})`;
+                }
+                if (properties.x) {
+                    let mySliderValue = properties.x.value;
+                    container.style.left = mySliderValue + '%';
+                }
+                if (properties.y) {
+                    let mySliderValue = properties.y.value;
+                    container.style.top = mySliderValue + '%';
+                }
+                if (properties.scale) {
+                    let mySliderValue = properties.scale.value;
+                    container.style.transform = ` translateX(-50%) translateY(-50%) scale(${mySliderValue})`;
+                }
+            },
+        };
+        function checkAPIKeyValidity(userApiKey) { // 验证用户key
+            const url = `https://devapi.qweather.com/v7/air/now?location=101010100&key=${userApiKey}`;
+            fetch(url)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('API 请求失败');
+                    }
+                })
+                .then(data => {
+                    const code = data.code;
+                    if (code == 200 || code == '200') {
+                        WeatherData.apiKey = userApiKey;
+                        userKeyLock = true;
+                        app3.click();
+                    } else {
+                        userKeyLock = false;
+                        app.click();
+                    }
+                })
+                .catch(error);
+        }
+        new Vue({
+            el: '#app',
+            methods: {
+                showAlert() {
+                    // 显示警告提示框
+                    this.showWarningAlert(`<h4 style="margin: 0px 20px; line-height: 26px;">很抱歉！key验证失败，请检查是否由 [和风天气] 官方提供32位key</h4>`)
+                },
+                showWarningAlert(message) {
+                    this.$message({
+                        showClose: true,
+                        dangerouslyUseHTMLString: true,
+                        message: message,
+                        type: 'warning',
+                    });
+                },
+            }
+        });
+        new Vue({
+            el: '#app2',
+            methods: {
+                showAlert() {
+                    // 显示警告提示框
+                    this.showWarningAlert(`<h4 style="margin: 0px 20px; line-height: 26px;">Error：糟糕！数据获取失败：<br/>1. 请检查地理位置是否正确<br/>2. 检查网络连接<br/>3. 尝试重新加载壁纸</h4>`)
+                },
+                showWarningAlert(message) {
+                    this.$message({
+                        showClose: true,
+                        dangerouslyUseHTMLString: true,
+                        message: message,
+                        type: 'error',
+                    });
+                },
+            }
+        });
+        new Vue({
+            el: '#app3',
+            methods: {
+                showAlert() {
+                    // 显示警告提示框
+                    this.showWarningAlert(`<h4 style="margin: 0px 20px; line-height: 26px;">恭喜你！key验证成功</h4>`)
+                },
+                showWarningAlert(message) {
+                    this.$message({
+                        showClose: true,
+                        dangerouslyUseHTMLString: true,
+                        message: message,
+                        type: 'success',
+                    });
+                },
+            }
+        });
+        new Vue({
+            el: '#app4',
+            methods: {
+                showAlert() {
+                    // 显示警告提示框
+                    this.showWarningAlert(`<h4 style="margin: 0px 20px; line-height: 26px;">更新成功！当前位置 ${WeatherData.cityNameStr}</h4>`)
+                },
+                showWarningAlert(message) {
+                    this.$message({
+                        showClose: true,
+                        dangerouslyUseHTMLString: true,
+                        message: message,
+                        type: 'success',
+                    });
+                },
+            }
+        });
+        new Vue({
+            el: '#app5',
+            methods: {
+                showAlert() {
+                    // 显示警告提示框
+                    this.showWarningAlert(`<h4 style="margin: 0px 20px; line-height: 26px;">Error:${data.code}:<br/>哎呀，key今日访问次数受限，访问次数不足<br/>请前往-壁纸属性面板更换key</h4>`)
+                },
+                showWarningAlert(message) {
+                    this.$message({
+                        showClose: true,
+                        dangerouslyUseHTMLString: true,
+                        message: message,
+                        type: 'success',
+                    });
+                },
+            }
+        });
+        let downTimeUpData = setInterval(getNowWeather, AutoDelayRefresh);
+        window.addEventListener('online', getNowWeather);
+        hitokoto_author.addEventListener('click', () => {
+            fetch(`https://v1.hitokoto.cn/?&c=d&c=k&c=i`)
+                .then(response => response.json())
+                .then((data) => {
+                    hitokoto_author.textContent = `${data.hitokoto}—— ${(data.from_who || '')} 「 ${data.from} 」`;
+                })
+                .catch(error => {
+                    console.log('Error', error);
+                })
+        });
+    </script>
+</body>
+
+</html>
